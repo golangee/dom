@@ -1,4 +1,4 @@
-# dom [![GoDoc](https://godoc.org/github.com/golangee/dom?status.svg)](http://godoc.org/github.com/golangee/dom)
+# dom [![Go Reference](https://pkg.go.dev/badge/github.com/golangee/dom.svg)](https://pkg.go.dev/github.com/golangee/dom)
 Package dom provides a *stable firewall* towards the "syscall/js" API. The wasm platform
 does not fulfill the Go 1 stability guarantee and may change and break (as already happened)
 with any release.
