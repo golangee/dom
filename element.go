@@ -99,11 +99,40 @@ func (n Element) Set(p string, x interface{}) Element {
 	return n
 }
 
+// Get returns unwrapped primitives like string, bool or float but for others its return value is undefined and
+// may change at any time.
+func (n Element) Get(p string) interface{} {
+	v := n.val.Get(p)
+	return asGoValue(v)
+}
+
+func asGoValue(v js.Value) interface{} {
+	switch v.Type() {
+	case js.TypeString:
+		return v.String()
+	case js.TypeBoolean:
+		return v.Bool()
+	case js.TypeNumber:
+		return v.Float()
+	case js.TypeNull:
+		return nil
+	default:
+		return v
+	}
+}
+
 // SetAttribute sets the html attribute. There are attributes, which have no corresponding
 // javascript property. See https://javascript.info/dom-attributes-and-properties#html-attributes.
 func (n Element) SetAttribute(a string, x interface{}) Element {
 	n.val.Call("setAttribute", a, x)
 	return n
+}
+
+// GetAttribute returns unwrapped primitives like string, bool or float but for others its return value is undefined and
+// may change at any time.
+func (n Element) GetAttribute(p string) interface{} {
+	v := n.val.Call("getAttribute", p)
+	return asGoValue(v)
 }
 
 // RemoveAttribute deletes the html attribute.
