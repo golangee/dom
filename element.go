@@ -15,6 +15,7 @@
 package dom
 
 import (
+	"strconv"
 	"syscall/js"
 )
 
@@ -89,7 +90,19 @@ func (n Element) ReplaceWith(o Element) Element {
 }
 
 func (n Element) String() string {
-	return n.val.Get("outerHTML").String()
+	v := n.val
+	switch v.Type() {
+	case js.TypeString:
+		return v.String()
+	case js.TypeBoolean:
+		return strconv.FormatBool(v.Bool())
+	case js.TypeNumber:
+		return strconv.FormatFloat(v.Float(), 'f', -1, 64)
+	case js.TypeNull:
+		return ""
+	default:
+		return n.val.Get("outerHTML").String()
+	}
 }
 
 // Set sets the javascript property. Most standard attributes have an according property.
